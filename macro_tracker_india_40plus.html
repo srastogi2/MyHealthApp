@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
+<meta name="description" content="Daily macro nutrition tracker with Indian food database, BMI assessment, and WHO/ICMR-based targets for adults 40+"/>
+<meta name="theme-color" content="#1D9E75"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="MacroTrack"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231D9E75' width='180' height='180' rx='39'/><text x='90' y='105' font-size='72' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>MT</text></svg>"/>
+<link rel="manifest" href="manifest.json"/>
+<title>MacroTrack — 40+ India</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+  <meta name="description" content="MacroTrack India 40+ — Daily macro nutrition tracker with WHO/ICMR standards, BMI assessment, and Indian food database."/>
+  <meta name="theme-color" content="#1D9E75"/>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json"/>
+  
+  <!-- iOS Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="MacroTrack"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231D9E75' width='180' height='180'/><text x='50%' y='50%' font-size='80' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='central'>MT</text></svg>"/>
+  
+  <!-- Android Home Screen -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231D9E75' width='192' height='192' rx='45'/><text x='50%' y='50%' font-size='100' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='central'>MT</text></svg>"/>
+<style>
+:root{
+  --green:#1D9E75;--green-dark:#0F6E56;--green-light:#E1F5EE;--green-border:#5DCAA5;--green-text:#085041;
+  --blue:#378ADD;--blue-light:#E6F1FB;--blue-text:#185FA5;
+  --amber:#EF9F27;--amber-light:#FAEEDA;--amber-text:#854F0B;
+  --purple:#7F77DD;--red:#E24B4A;
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0ede6;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.2);
+  --text:#1a1a18;--text2:#5f5e5a;--text3:#999890;
+  --radius:10px;--radius-lg:14px;--radius-pill:22px;
+  --shadow:0 1px 4px rgba(0,0,0,0.08);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1c1c1a;--surface:#252523;--surface2:#2e2e2b;
+    --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);
+    --text:#f0eeea;--text2:#b4b2a9;--text3:#77766e;
+    --green-light:#0a2e22;--green-border:#1D9E75;--green-text:#9FE1CB;
+    --blue-light:#0d1f35;--blue-text:#85B7EB;
+    --amber-light:#2a1e08;--amber-text:#FAC775;
+    --shadow:0 1px 6px rgba(0,0,0,0.3);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;min-height:100vh;}
+
+.app-header{background:var(--surface);border-bottom:0.5px solid var(--border);padding:12px 16px 9px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;}
+.app-header .logo{font-size:24px;}
+.app-header h1{font-size:16px;font-weight:700;}
+.app-header p{font-size:11px;color:var(--text3);margin-top:1px;}
+
+.nav-tabs{display:flex;background:var(--surface);border-bottom:0.5px solid var(--border);position:sticky;top:57px;z-index:99;}
+.nav-tab{flex:1;padding:9px 4px;text-align:center;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;}
+.nav-tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:600;}
+
+.tab-content{display:none;padding:12px 12px 110px;}
+.tab-content.active{display:block;}
+
+.card{background:var(--surface);border-radius:var(--radius-lg);border:0.5px solid var(--border);padding:13px;margin-bottom:11px;box-shadow:var(--shadow);}
+.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:11px;}
+
+.field-label{font-size:12px;color:var(--text2);margin-bottom:5px;display:block;}
+input[type=number],select{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--surface2);color:var(--text);-webkit-appearance:none;}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--green);}
+.field-row{display:flex;gap:9px;margin-bottom:11px;}
+.field-row>div{flex:1;}
+
+.pill-group{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px;}
+.pill{cursor:pointer;padding:7px 12px;border-radius:var(--radius-pill);border:0.5px solid var(--border2);font-size:13px;color:var(--text2);background:var(--surface2);transition:all .15s;user-select:none;display:inline-flex;align-items:center;gap:4px;}
+.pill.sel{background:var(--green-light);border-color:var(--green-dark);color:var(--green-dark);font-weight:600;}
+.pill .ck{opacity:0;font-size:11px;}
+.pill.sel .ck{opacity:1;}
+
+.act-badge{font-size:12px;color:var(--green-text);background:var(--green-light);border-radius:var(--radius);padding:6px 10px;margin-top:8px;line-height:1.5;display:none;}
+.freq-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.freq-row select{width:auto;padding:6px 10px;font-size:13px;}
+.freq-row span{font-size:13px;color:var(--text2);}
+
+.btn{display:block;width:100%;padding:13px;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;border:none;text-align:center;margin-top:4px;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:active{background:var(--green-dark);}
+
+/* ── TARGETS TAB ── */
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.metric-card{background:var(--surface2);border-radius:var(--radius);padding:9px 7px;text-align:center;}
+.metric-val{font-size:18px;font-weight:700;}
+.metric-lbl{font-size:10px;color:var(--text3);margin-top:2px;}
+.result-badge{font-size:12px;color:var(--green-text);background:var(--green-light);border-radius:var(--radius);padding:6px 10px;margin-bottom:11px;line-height:1.5;}
+
+/* ── PIE CHART ── */
+.pie-wrap{display:flex;flex-direction:column;align-items:center;padding:6px 0 10px;}
+.pie-svg-wrap{position:relative;width:180px;height:180px;}
+.pie-svg-wrap svg{width:180px;height:180px;}
+.pie-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.pie-center-val{font-size:20px;font-weight:700;color:var(--text);}
+.pie-center-lbl{font-size:11px;color:var(--text3);}
+.pie-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:14px;width:100%;}
+.pie-leg-item{display:flex;align-items:center;gap:6px;font-size:13px;}
+.pie-leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.pie-leg-label{color:var(--text2);}
+.pie-leg-val{font-weight:600;color:var(--text);}
+
+/* bar fallback */
+.bar-wrap{margin-bottom:10px;}
+.bar-label-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;}
+.bar-bg{background:var(--surface2);border-radius:5px;height:10px;overflow:hidden;}
+.bar-fill{height:10px;border-radius:5px;transition:width .4s;}
+
+/* ── LOG TAB ── */
+.sec-lbl{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.7px;text-transform:uppercase;margin:13px 0 7px;}
+.search-wrap{position:relative;margin-bottom:10px;}
+.search-wrap input{width:100%;padding:9px 11px 9px 34px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--surface2);color:var(--text);}
+.search-wrap input:focus{outline:none;border-color:var(--green);}
+.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none;}
+
+/* compact list-style food grid — 1 col, horizontal rows */
+.food-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:4px;}
+.food-btn{cursor:pointer;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--surface2);overflow:hidden;transition:background .12s,border-color .15s;display:flex;flex-direction:row;align-items:center;gap:8px;padding:7px 9px;}
+.food-btn:active{background:var(--green-light);border-color:var(--green);}
+.food-img-wrap{font-size:22px;flex-shrink:0;width:28px;text-align:center;}
+.food-info{flex:1;min-width:0;}
+.food-name{font-weight:600;font-size:12.5px;color:var(--text);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.food-kcal{font-size:11px;color:var(--text3);}
+.food-pmacro{font-size:10.5px;margin-top:1px;}
+.food-pmacro .mp{color:var(--green-dark);}
+.food-pmacro .mc{color:var(--blue-text);}
+.food-pmacro .mf{color:var(--amber-text);}
+.food-add-ico{font-size:18px;color:var(--green);flex-shrink:0;font-weight:700;}
+.food-added-flash{background:var(--green-light)!important;border-color:var(--green)!important;}
+
+/* log rows */
+.log-row{display:flex;align-items:center;gap:7px;padding:8px 0;border-bottom:0.5px solid var(--border);}
+.log-row:last-child{border-bottom:none;}
+.log-emoji{font-size:22px;flex-shrink:0;}
+.log-details{flex:1;min-width:0;}
+.log-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.log-tags{display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;}
+.tag{font-size:10.5px;padding:1px 6px;border-radius:9px;font-weight:600;white-space:nowrap;}
+.tag-p{background:var(--green-light);color:var(--green-dark);}
+.tag-c{background:var(--blue-light);color:var(--blue-text);}
+.tag-f{background:var(--amber-light);color:var(--amber-text);}
+.log-qty-row{display:flex;align-items:center;gap:5px;margin:4px 0;}
+.qty-label{font-size:11px;color:var(--text3);}
+.qty-btn{width:24px;height:24px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;padding:0;}
+.qty-btn:active{background:var(--green-light);border-color:var(--green);}
+.qty-input{width:46px;padding:3px 6px;border:0.5px solid var(--border2);border-radius:6px;font-size:13px;font-weight:600;background:var(--surface2);color:var(--text);text-align:center;-webkit-appearance:none;}
+.qty-input:focus{outline:none;border-color:var(--green);}
+.qty-hint{font-size:10.5px;color:var(--text3);}
+.log-cal{font-size:12px;color:var(--text3);flex-shrink:0;}
+.rm-btn{color:var(--text3);font-size:20px;padding:0 2px;cursor:pointer;line-height:1;flex-shrink:0;}
+.rm-btn:active{color:var(--red);}
+.totals-row{display:flex;justify-content:space-between;font-size:12px;font-weight:700;padding:9px 0 3px;color:var(--text2);}
+
+.tip-box{background:var(--green-light);border:0.5px solid var(--green-border);border-radius:var(--radius);padding:10px 12px;font-size:13px;color:var(--green-text);margin-bottom:8px;line-height:1.6;}
+.empty{text-align:center;padding:24px 16px;color:var(--text3);font-size:13px;}
+
+/* macro detail table */
+.macro-detail-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:8px;}
+.macro-detail-table th{text-align:left;font-weight:700;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:4px 6px 4px 0;border-bottom:0.5px solid var(--border);}
+.macro-detail-table td{padding:6px 6px 6px 0;border-bottom:0.5px solid var(--border);color:var(--text2);vertical-align:top;}
+.macro-detail-table tr:last-child td{border-bottom:none;}
+.macro-detail-table .val{font-weight:700;color:var(--text);}
+.macro-detail-table .src{font-size:11px;color:var(--text3);}
+.adj-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:8px;margin-left:5px;}
+.bmi-gauge-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 4px;}
+.bmi-number{font-size:52px;font-weight:800;line-height:1;margin-bottom:4px;}
+.bmi-category{font-size:15px;font-weight:700;margin-bottom:14px;}
+.bmi-scale{width:100%;height:14px;border-radius:7px;background:linear-gradient(to right,#4DB8FF 0%,#4DB8FF 14%,#1D9E75 14%,#1D9E75 42%,#EF9F27 42%,#EF9F27 65%,#E24B4A 65%,#E24B4A 82%,#8B0000 82%,#8B0000 100%);position:relative;margin-bottom:6px;}
+.bmi-marker{position:absolute;top:-5px;width:4px;height:24px;background:var(--text);border-radius:2px;transform:translateX(-50%);transition:left .5s;}
+.bmi-scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:14px;}
+.bmi-range-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;}
+.bmi-range-row:last-child{border-bottom:none;}
+.bmi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.bmi-range-lbl{flex:1;color:var(--text2);}
+.bmi-range-val{font-size:12px;color:var(--text3);}
+.bmi-range-row.active-range{background:var(--surface2);border-radius:var(--radius);padding:7px 8px;margin:0 -8px;}
+.diet-rec{border-radius:var(--radius);padding:11px 13px;margin-bottom:9px;font-size:13px;line-height:1.6;}
+.diet-rec-title{font-weight:700;font-size:14px;margin-bottom:6px;}
+.diet-rec.green{background:var(--green-light);color:var(--green-text);border:0.5px solid var(--green-border);}
+.diet-rec.amber{background:var(--amber-light);color:var(--amber-text);border:0.5px solid #E8B96A;}
+.diet-rec.red{background:#FDEAEA;color:#7A1A1A;border:0.5px solid #F5AAAA;}
+.diet-rec.blue{background:var(--blue-light);color:var(--blue-text);border:0.5px solid #8BBFED;}
+.ideal-weight-box{background:var(--surface2);border-radius:var(--radius);padding:10px 12px;margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7;}
+.ideal-weight-box strong{color:var(--text);font-weight:700;}
+
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .tab-content{padding-bottom:calc(110px + env(safe-area-inset-bottom));}
+}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="logo">🥗</div>
+  <div>
+    <h1>Macro Tracker — 40+</h1>
+    <p>Indian food · Protein · Carbs · Fat</p>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('profile')">⚙️ Profile</div>
+  <div class="nav-tab" onclick="switchTab('bmi')">📊 BMI</div>
+  <div class="nav-tab" onclick="switchTab('targets')">🎯 Targets</div>
+  <div class="nav-tab" onclick="switchTab('log')">🍽 Log</div>
+  <div class="nav-tab" onclick="switchTab('tips')">💡 Tips</div>
+</div>
+
+<!-- PROFILE -->
+<div class="tab-content active" id="tab-profile">
+  <div class="card">
+    <div class="card-title">Personal details</div>
+    <div style="margin-bottom:11px">
+      <span class="field-label">Gender</span>
+      <div class="pill-group">
+        <div class="pill" style="cursor: pointer; -webkit-user-select: none; user-select: none; display: inline-block; padding: 8px 12px; margin-right: 5px; border: 1px solid #ccc; border-radius: 20px;" onclick="selSingle(this,'gender','male')" data-g="gender" data-v="male">👨 Male</div>
+        <div class="pill" style="cursor: pointer; -webkit-user-select: none; user-select: none; display: inline-block; padding: 8px 12px; margin-right: 5px; border: 1px solid #ccc; border-radius: 20px;" onclick="selSingle(this,'gender','female')" data-g="gender" data-v="female">👩 Female</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div><span class="field-label">Age (40+)</span><input type="number" id="age" min="40" max="90" value="45"/></div>
+      <div><span class="field-label">Weight (kg)</span><input type="number" id="weight" min="40" max="150" value="70"/></div>
+      <div><span class="field-label">Height (cm)</span><input type="number" id="height" min="140" max="210" value="165"/></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Activities <span style="font-size:12px;font-weight:400;color:var(--text3)">(multi-select)</span></div>
+    <div class="pill-group" id="act-grid">
+      <div class="pill" onclick="toggleAct(this)" data-act="sedentary"><span class="ck">✓</span>🪑 Sedentary</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="walk"><span class="ck">✓</span>🚶 Walk</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="run"><span class="ck">✓</span>🏃 Running</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="badminton"><span class="ck">✓</span>🏸 Badminton</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="cycling"><span class="ck">✓</span>🚴 Cycling</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="swim"><span class="ck">✓</span>🏊 Swimming</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="yoga"><span class="ck">✓</span>🧘 Yoga</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="light"><span class="ck">✓</span>🏋️ Light gym</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="weights"><span class="ck">✓</span>💪 Weights</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="dance"><span class="ck">✓</span>💃 Zumba</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="cricket"><span class="ck">✓</span>🏏 Cricket</div>
+      <div class="pill" onclick="toggleAct(this)" data-act="stairs"><span class="ck">✓</span>🪜 Stairs</div>
+    </div>
+    <div class="act-badge" id="act-summary"></div>
+    <div class="freq-row">
+      <select id="freq-days">
+        <option value="1">1 day/wk</option><option value="2">2 days/wk</option>
+        <option value="3" selected>3 days/wk</option><option value="4">4 days/wk</option>
+        <option value="5">5 days/wk</option><option value="6">6 days/wk</option>
+        <option value="7">Daily</option>
+      </select>
+      <span>Session:</span>
+      <select id="session-mins">
+        <option value="20">20 min</option><option value="30" selected>30 min</option>
+        <option value="45">45 min</option><option value="60">60 min</option>
+        <option value="90">90 min</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Goal</div>
+    <div class="pill-group">
+      <div class="pill" onclick="selSingle(this,'goal','maintain')" data-g="goal" data-v="maintain">⚖️ Maintain</div>
+      <div class="pill" onclick="selSingle(this,'goal','lose')" data-g="goal" data-v="lose">📉 Lose weight</div>
+      <div class="pill" onclick="selSingle(this,'goal','muscle')" data-g="goal" data-v="muscle">💪 Build muscle</div>
+    </div>
+  </div>
+  <button class="btn btn-green" onclick="calcAndSwitch()">Calculate my targets →</button>
+</div>
+
+<!-- BMI TAB -->
+<div class="tab-content" id="tab-bmi">
+  <div class="card">
+    <div class="card-title">BMI Calculator</div>
+    <div class="field-row" style="margin-bottom:8px">
+      <div><span class="field-label">Weight (kg)</span><input type="number" id="bmi-weight" min="30" max="200" placeholder="e.g. 70" oninput="calcBMI()"/></div>
+      <div><span class="field-label">Height (cm)</span><input type="number" id="bmi-height" min="100" max="220" placeholder="e.g. 165" oninput="calcBMI()"/></div>
+    </div>
+    <div id="bmi-result" style="display:none">
+      <div class="bmi-gauge-wrap">
+        <div class="bmi-number" id="bmi-val">—</div>
+        <div class="bmi-category" id="bmi-cat">—</div>
+        <div style="width:100%">
+          <div class="bmi-scale"><div class="bmi-marker" id="bmi-marker" style="left:0%"></div></div>
+          <div class="bmi-scale-labels"><span>15</span><span>18.5</span><span>23</span><span>27.5</span><span>32.5</span><span>40</span></div>
+        </div>
+      </div>
+      <div class="bmi-range-row" id="range-under"><div class="bmi-dot" style="background:#4DB8FF"></div><span class="bmi-range-lbl">Underweight</span><span class="bmi-range-val">Below 18.5</span></div>
+      <div class="bmi-range-row" id="range-normal"><div class="bmi-dot" style="background:#1D9E75"></div><span class="bmi-range-lbl">Normal weight</span><span class="bmi-range-val">18.5 – 22.9</span></div>
+      <div class="bmi-range-row" id="range-preob"><div class="bmi-dot" style="background:#EF9F27"></div><span class="bmi-range-lbl">Pre-obese / Overweight</span><span class="bmi-range-val">23.0 – 24.9</span></div>
+      <div class="bmi-range-row" id="range-ob1"><div class="bmi-dot" style="background:#E24B4A"></div><span class="bmi-range-lbl">Obese Class I</span><span class="bmi-range-val">25.0 – 29.9</span></div>
+      <div class="bmi-range-row" id="range-ob2"><div class="bmi-dot" style="background:#8B0000"></div><span class="bmi-range-lbl">Obese Class II+</span><span class="bmi-range-val">30.0 and above</span></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:6px;padding:6px 8px;background:var(--surface2);border-radius:var(--radius)">📋 <strong>Standard:</strong> WHO Asia-Pacific 2004 / ICMR Consensus 2020 — lower cutoffs apply to South Asians due to higher metabolic risk at lower BMI vs Western populations.</div>
+      <div class="ideal-weight-box" id="ideal-weight-box"></div>
+    </div>
+    <div id="bmi-empty" style="padding:12px 0;font-size:13px;color:var(--text3)">Enter your weight and height above to calculate BMI.</div>
+  </div>
+
+  <div id="diet-assessment" style="display:none">
+    <div class="card">
+      <div class="card-title">Diet approach based on your BMI</div>
+      <div id="diet-recs"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Roti recommendations for your BMI</div>
+      <div id="roti-recs"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TARGETS -->
+<div class="tab-content" id="tab-targets">
+  <div class="card">
+    <div class="card-title">Daily macro targets</div>
+    <div class="result-badge" id="result-badge">Set your profile first →</div>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-val" id="t-cal">—</div><div class="metric-lbl">🔥 Calories</div></div>
+      <div class="metric-card"><div class="metric-val" id="t-prot" style="color:var(--green)">—</div><div class="metric-lbl">🥩 Protein (g)</div></div>
+      <div class="metric-card"><div class="metric-val" id="t-carb" style="color:var(--blue)">—</div><div class="metric-lbl">🍚 Carbs (g)</div></div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-val" id="t-fat" style="color:var(--amber)">—</div><div class="metric-lbl">🫒 Fat (g)</div></div>
+      <div class="metric-card"><div class="metric-val" id="t-fiber">—</div><div class="metric-lbl">🌾 Fiber (g)</div></div>
+      <div class="metric-card"><div class="metric-val" id="t-bmr">—</div><div class="metric-lbl">⚡ BMR</div></div>
+    </div>
+    <div id="bmi-adjustment-box" style="display:none;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12.5px;line-height:1.7;"></div>
+  </div>
+
+  <!-- BMI-ADJUSTED MACRO DETAIL CARD -->
+  <div class="card" id="macro-detail-card" style="display:none">
+    <div class="card-title">📐 How your targets were calculated</div>
+    <div id="macro-detail-body"></div>
+    <div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Standards applied</div>
+      <div id="standards-box" style="font-size:11.5px;color:var(--text3);line-height:1.8;"></div>
+    </div>
+  </div>
+
+  <!-- PIE CHART CARD -->
+  <div class="card" id="pie-card" style="display:none">
+    <div class="card-title">Today's macro breakdown</div>
+    <div class="pie-wrap">
+      <div class="pie-svg-wrap">
+        <svg viewBox="0 0 180 180" id="pie-svg"></svg>
+        <div class="pie-center">
+          <div class="pie-center-val" id="pie-cal-val">0</div>
+          <div class="pie-center-lbl">kcal eaten</div>
+        </div>
+      </div>
+      <div class="pie-legend" id="pie-legend"></div>
+    </div>
+    <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--border)">
+      <div class="bar-wrap">
+        <div class="bar-label-row"><span>🥩 Protein</span><span id="prog-p">0g</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-p" style="background:var(--green);width:0%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label-row"><span>🍚 Carbs</span><span id="prog-c">0g</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-c" style="background:var(--blue);width:0%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label-row"><span>🫒 Fat</span><span id="prog-f">0g</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-f" style="background:var(--amber);width:0%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label-row"><span>🔥 Calories</span><span id="prog-cal">0 kcal</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-cal" style="background:var(--purple);width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div class="tab-content" id="tab-log">
+  <div class="card" id="log-card">
+    <div class="card-title">Today's log</div>
+    <div id="log-list"><div class="empty">Nothing logged yet.<br/>Add food below 👇</div></div>
+    <div class="totals-row" id="totals-row" style="display:none"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Add food</div>
+    <div class="search-wrap">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="food-search" placeholder="Search any food…" oninput="filterFoods(this.value)"/>
+    </div>
+    <div id="search-results" style="display:none" class="food-grid"></div>
+    <div id="all-cats"></div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="tab-content" id="tab-tips">
+  <div class="card">
+    <div class="card-title">💡 Tips for 40+ adults</div>
+    <div id="tips-content"><div class="empty">Set your profile and calculate targets first.</div></div>
+  </div>
+</div>
+
+<script>
+const profile={gender:null,goal:null};
+const selectedActs=new Set();
+const log=[];
+// ─── Data Persistence ───
+function saveLog(){try{localStorage.setItem('macrotrack_log',JSON.stringify(log));}catch(e){console.log('Save failed:',e);}}
+function loadLog(){try{const d=localStorage.getItem('macrotrack_log');if(d){log.length=0;log.push(...JSON.parse(d));renderLog();updateChart();}}catch(e){console.log('Load failed:',e);}}
+window.addEventListener('beforeunload',saveLog);
+window.addEventListener('pagehide',saveLog);
+// Load on startup
+loadLog();
+let targets={};
+
+const ACT_LABELS={sedentary:'Sedentary',walk:'Walk',run:'Running',badminton:'Badminton',cycling:'Cycling',swim:'Swimming',yoga:'Yoga',light:'Light gym',weights:'Weights',dance:'Zumba',cricket:'Cricket',stairs:'Stairs'};
+
+const FOOD_CATS=[
+  {id:'beverages',label:'Tea, coffee & drinks',foods:[
+    {e:'☕',name:'Chai with milk (1 cup)',cal:55,p:2,c:8,f:1.5},
+    {e:'🍵',name:'Chai no sugar (1 cup)',cal:30,p:2,c:3,f:1},
+    {e:'☕',name:'Black coffee (1 cup)',cal:5,p:0.3,c:0.5,f:0},
+    {e:'☕',name:'Coffee with milk',cal:60,p:3,c:7,f:2},
+    {e:'☕',name:'Filter coffee (1 cup)',cal:65,p:2.5,c:8,f:2.5},
+    {e:'🍵',name:'Green tea (1 cup)',cal:2,p:0,c:0.5,f:0},
+    {e:'🥛',name:'Turmeric milk (1 glass)',cal:130,p:7,c:13,f:5},
+    {e:'🥤',name:'Buttermilk (1 glass)',cal:40,p:3,c:5,f:1},
+    {e:'🥥',name:'Coconut water (1 glass)',cal:46,p:0.5,c:9,f:0.5},
+  ]},
+  {id:'biscuits',label:'Biscuits & bakery',foods:[
+    {e:'🍪',name:'Marie biscuits (4)',cal:120,p:2,c:22,f:3},
+    {e:'🍪',name:'Digestive biscuits (3)',cal:165,p:2.5,c:24,f:6.5},
+    {e:'🍪',name:'Cream biscuits (4)',cal:200,p:2,c:28,f:9},
+    {e:'🫓',name:'Multigrain crackers (5)',cal:110,p:2.5,c:18,f:3},
+    {e:'🫓',name:'Khakhra (2)',cal:140,p:4,c:22,f:4},
+    {e:'🍞',name:'Rusk (2 pieces)',cal:120,p:3,c:22,f:2.5},
+    {e:'🍪',name:'Mathri (3 pieces)',cal:190,p:3,c:22,f:10},
+    {e:'🍪',name:'Whole wheat biscuits (4)',cal:130,p:3,c:21,f:4},
+  ]},
+  {id:'chocolate',label:'Chocolate & sweets',foods:[
+    {e:'🍫',name:'Dark chocolate 70%+ (25g)',cal:140,p:2,c:10,f:10},
+    {e:'🍫',name:'Milk chocolate (25g)',cal:133,p:2,c:16,f:7.5},
+    {e:'🍫',name:'White chocolate (25g)',cal:135,p:1.5,c:17,f:8},
+    {e:'🍫',name:'Dairy Milk bar (40g)',cal:210,p:3,c:26,f:11},
+    {e:'🍫',name:'Dark choc 1 square (10g)',cal:56,p:0.8,c:4,f:4},
+    {e:'🍪',name:'Chocolate biscuit (2)',cal:160,p:2,c:21,f:8},
+    {e:'🍫',name:'Chocolate protein bar (1)',cal:200,p:15,c:22,f:7},
+    {e:'☕',name:'Hot chocolate (1 cup)',cal:155,p:4,c:24,f:5},
+    {e:'🫙',name:'Cocoa powder (1 tbsp)',cal:12,p:1,c:3,f:0.5},
+    {e:'🍮',name:'Chocolate halwa (1 serving)',cal:280,p:4,c:38,f:13},
+  ]},
+  {id:'spreads',label:'Bread, butter, cheese & spreads',foods:[
+    {e:'🍞',name:'Bread slice white (1)',cal:65,p:2,c:12,f:0.8},
+    {e:'🍞',name:'Bread slice whole wheat (1)',cal:70,p:3,c:13,f:1},
+    {e:'🧈',name:'Butter (1 tsp)',cal:34,p:0,c:0,f:3.8},
+    {e:'🧈',name:'Bread + butter (1 slice)',cal:99,p:2,c:12,f:4.6},
+    {e:'🧀',name:'Cheese slice / processed (1)',cal:70,p:4,c:1,f:5.5},
+    {e:'🧀',name:'Cheddar cheese (25g)',cal:100,p:6,c:0.5,f:8.5},
+    {e:'🧀',name:'Cheese spread (1 tbsp)',cal:45,p:2,c:1,f:3.5},
+    {e:'🍞',name:'Cheese toast (1 slice)',cal:135,p:6,c:12,f:6.5},
+    {e:'🥪',name:'Cheese sandwich (2 slices)',cal:280,p:12,c:28,f:13},
+    {e:'🥪',name:'Cheese + veg sandwich (2 slices)',cal:310,p:13,c:32,f:13},
+    {e:'🍯',name:'Mayonnaise (1 tbsp)',cal:90,p:0.2,c:0.5,f:10},
+    {e:'🍯',name:'Eggless mayo (1 tbsp)',cal:75,p:0,c:1,f:8},
+    {e:'🥪',name:'Mayo veg sandwich (2 slices)',cal:320,p:7,c:30,f:18},
+    {e:'🫙',name:'Peanut butter (1 tbsp)',cal:95,p:4,c:3,f:8},
+    {e:'🍯',name:'Jam (1 tbsp)',cal:56,p:0.1,c:14,f:0},
+  ]},
+  {id:'sandwiches',label:'Sandwiches & snacks',foods:[
+    {e:'🥪',name:'Veg sandwich (2 slices)',cal:190,p:6,c:30,f:4.5},
+    {e:'🥚',name:'Egg sandwich (2 slices)',cal:250,p:14,c:28,f:9},
+    {e:'🍗',name:'Chicken sandwich (2 slices)',cal:290,p:22,c:28,f:8},
+    {e:'🧀',name:'Paneer sandwich (2 slices)',cal:280,p:13,c:30,f:11},
+    {e:'🌿',name:'Chutney sandwich (2 slices)',cal:170,p:4,c:28,f:4},
+    {e:'🔺',name:'Samosa (1)',cal:150,p:2.5,c:19,f:7},
+    {e:'🟡',name:'Dhokla (2 pieces)',cal:145,p:5,c:26,f:2},
+    {e:'🥘',name:'Poha (1 cup)',cal:180,p:3.5,c:35,f:3},
+    {e:'🥘',name:'Upma (1 cup)',cal:200,p:4,c:30,f:7},
+    {e:'🥗',name:'Moong chilla plain (1)',cal:95,p:6,c:12,f:2.5},
+    {e:'🥗',name:'Moong chilla + paneer (1)',cal:160,p:10,c:13,f:7},
+    {e:'🥗',name:'Moong chilla + veggies (1)',cal:110,p:7,c:13,f:3},
+  ]},
+  {id:'breakfast',label:'South Indian & breakfast',foods:[
+    {e:'🍝',name:'Vermicelli / seviyan upma (1 cup)',cal:215,p:5,c:38,f:5},
+    {e:'🍝',name:'Vermicelli kheer (1 cup)',cal:280,p:6,c:48,f:7},
+    {e:'🍝',name:'Roasted vermicelli (1 cup dry)',cal:350,p:11,c:70,f:2},
+    {e:'🥣',name:'Ragi upma (1 cup)',cal:185,p:4,c:34,f:4},
+    {e:'🌾',name:'Jowar upma (1 cup)',cal:175,p:5,c:33,f:3.5},
+    {e:'🥣',name:'Ragi dosa (1)',cal:110,p:3,c:20,f:2},
+    {e:'🥣',name:'Ragi mudde (2 balls)',cal:180,p:4,c:38,f:1},
+    {e:'🟤',name:'Medu vada (1)',cal:110,p:3.5,c:14,f:5},
+    {e:'🟤',name:'Medu vada (2)',cal:220,p:7,c:28,f:10},
+    {e:'🟤',name:'Masala vada (1)',cal:130,p:5,c:16,f:6},
+    {e:'🟤',name:'Dahi vada (2 pieces)',cal:220,p:9,c:30,f:7},
+    {e:'🟤',name:'Vada sambar (2 + 1 cup)',cal:320,p:12,c:43,f:12},
+    {e:'🟡',name:'Rava idli (2)',cal:160,p:5,c:28,f:4},
+    {e:'🟡',name:'Set dosa (2)',cal:200,p:5,c:36,f:4},
+    {e:'🥞',name:'Uttapam (1 medium)',cal:175,p:4.5,c:28,f:5},
+    {e:'🥞',name:'Onion uttapam (1)',cal:195,p:5,c:30,f:6},
+    {e:'🟡',name:'Pongal (1 cup)',cal:230,p:6,c:38,f:6},
+    {e:'🍚',name:'Lemon rice (1 cup)',cal:220,p:4,c:42,f:5},
+    {e:'🍚',name:'Curd rice (1 cup)',cal:190,p:6,c:32,f:4},
+    {e:'🍚',name:'Tamarind rice (1 cup)',cal:230,p:4,c:44,f:5},
+    {e:'🥘',name:'Sabudana khichdi (1 cup)',cal:280,p:3,c:55,f:6},
+  ]},
+  {id:'parathas',label:'Parathas',foods:[
+    {e:'🫓',name:'Plain paratha (1)',cal:180,p:3,c:24,f:7},
+    {e:'🥔',name:'Aloo paratha (1)',cal:220,p:4,c:32,f:8},
+    {e:'🥦',name:'Gobi paratha (1)',cal:200,p:4.5,c:28,f:7.5},
+    {e:'🧀',name:'Paneer paratha (1)',cal:250,p:9,c:28,f:12},
+    {e:'🌿',name:'Methi paratha (1)',cal:175,p:4,c:25,f:6.5},
+    {e:'🧅',name:'Onion paratha (1)',cal:190,p:3.5,c:27,f:7},
+    {e:'🥕',name:'Mixed veg paratha (1)',cal:195,p:4,c:28,f:7.5},
+    {e:'🧀',name:'Cheese paratha (1)',cal:280,p:8,c:28,f:15},
+  ]},
+  {id:'sprouts',label:'Sprouts & chana',foods:[
+    {e:'🌱',name:'Moong sprouts raw (1 cup)',cal:31,p:3,c:6,f:0.2},
+    {e:'🌱',name:'Moong sprouts steamed (1 cup)',cal:35,p:3.5,c:6.5,f:0.3},
+    {e:'🌱',name:'Mixed sprouts (1 cup)',cal:52,p:4,c:9,f:0.5},
+    {e:'🌱',name:'Steamed sprouts salad (1 bowl)',cal:80,p:6,c:13,f:1},
+    {e:'🫘',name:'Chana sprouts (1 cup)',cal:105,p:7,c:18,f:1},
+    {e:'🫘',name:'Chana sprouts steamed (1 cup)',cal:110,p:7.5,c:18,f:1},
+    {e:'🫘',name:'Kala chana sabzi (1 cup)',cal:180,p:10,c:30,f:3},
+    {e:'🫘',name:'Safed chana / kabuli sabzi (1 cup)',cal:210,p:12,c:35,f:4},
+    {e:'🫘',name:'Chana dal (1 cup cooked)',cal:190,p:11,c:32,f:3},
+    {e:'🥗',name:'Sprout chaat (1 bowl)',cal:120,p:7,c:20,f:1.5},
+  ]},
+  {id:'vegetables',label:'Vegetables & sabzis',foods:[
+    {e:'🫑',name:'Capsicum stir fry (1 cup)',cal:55,p:1.5,c:9,f:1.5},
+    {e:'🫑',name:'Capsicum raw (1 medium)',cal:31,p:1,c:6,f:0.3},
+    {e:'🥕',name:'Carrot sabzi (1 cup)',cal:70,p:1.5,c:14,f:1},
+    {e:'🥕',name:'Carrot raw (1 medium)',cal:25,p:0.6,c:6,f:0.1},
+    {e:'🥦',name:'Broccoli stir fry (1 cup)',cal:55,p:4,c:8,f:1},
+    {e:'🥦',name:'Broccoli steamed (1 cup)',cal:31,p:2.5,c:6,f:0.3},
+    {e:'🫚',name:'Beetroot sabzi (1 cup)',cal:85,p:2,c:17,f:1.5},
+    {e:'🫚',name:'Beetroot raw sliced (100g)',cal:43,p:1.6,c:10,f:0.2},
+    {e:'🧅',name:'Onion tomato masala base',cal:65,p:1.5,c:10,f:2},
+    {e:'🥒',name:'Cucumber sliced (1 cup)',cal:16,p:0.7,c:3,f:0.1},
+    {e:'🍅',name:'Tomato chopped (1 cup)',cal:32,p:1.5,c:7,f:0.3},
+    {e:'🌽',name:'Corn kernels (½ cup)',cal:66,p:2.5,c:14,f:0.8},
+    {e:'🥬',name:'Spinach / palak raw (1 cup)',cal:7,p:0.9,c:1,f:0.1},
+    {e:'🫘',name:'French beans sabzi (1 cup)',cal:50,p:2.5,c:9,f:0.5},
+    {e:'🫛',name:'Peas (½ cup)',cal:59,p:4,c:10,f:0.3},
+    {e:'🍆',name:'Baingan / brinjal sabzi (1 cup)',cal:75,p:2,c:11,f:2.5},
+    {e:'🥬',name:'Lauki / bottle gourd sabzi',cal:45,p:1,c:9,f:0.5},
+    {e:'🟢',name:'Bhindi / okra sabzi (1 cup)',cal:80,p:2,c:11,f:3},
+    {e:'🟢',name:'Bhindi stir fry / kurkuri (1 cup)',cal:110,p:2.5,c:12,f:6},
+    {e:'🟢',name:'Bhindi raw (100g)',cal:33,p:1.9,c:7,f:0.2},
+    {e:'🥗',name:'Mixed veg stir fry (1 cup)',cal:80,p:2.5,c:12,f:2.5},
+    {e:'🥗',name:'Garden salad (1 bowl)',cal:35,p:2,c:6,f:0.5},
+    {e:'🥑',name:'Avocado (½)',cal:120,p:1.5,c:6,f:11},
+  ]},
+  {id:'millets',label:'Millets & ancient grains',foods:[
+    {e:'🌾',name:'Daliya / broken wheat (1 cup)',cal:150,p:5.5,c:29,f:1},
+    {e:'🌾',name:'Foxtail millet (1 cup cooked)',cal:170,p:5,c:34,f:2},
+    {e:'🥣',name:'Ragi porridge (1 cup)',cal:145,p:3.5,c:30,f:1},
+    {e:'🌾',name:'Barnyard millet (1 cup)',cal:162,p:4.5,c:32,f:1.5},
+    {e:'🌾',name:'Little millet (1 cup)',cal:155,p:4,c:31,f:1.5},
+    {e:'🌾',name:'Kodo millet (1 cup)',cal:160,p:4.5,c:33,f:1},
+    {e:'🌀',name:'Quinoa (1 cup cooked)',cal:222,p:8,c:39,f:3.5},
+  ]},
+  {id:'nuts',label:'Nuts, seeds & foxnuts',foods:[
+    {e:'🌼',name:'Makhana / foxnuts (30g)',cal:107,p:3.5,c:20,f:0.5},
+    {e:'🌼',name:'Roasted makhana (30g)',cal:115,p:3.5,c:21,f:1.5},
+    {e:'🥜',name:'Groundnuts / peanuts (30g)',cal:170,p:7.5,c:5,f:14},
+    {e:'🥜',name:'Roasted peanuts (30g)',cal:175,p:8,c:5.5,f:14},
+    {e:'🌰',name:'Almonds (10)',cal:70,p:2.5,c:2.5,f:6},
+    {e:'🌰',name:'Walnuts (4 halves)',cal:100,p:2.5,c:2,f:10},
+    {e:'🌰',name:'Cashews (10)',cal:90,p:3,c:5,f:7},
+    {e:'🌰',name:'Pista (20)',cal:80,p:3,c:4,f:6.5},
+    {e:'🥜',name:'Mixed nuts (30g)',cal:180,p:5,c:6,f:16},
+    {e:'🌻',name:'Sunflower seeds (2 tbsp)',cal:100,p:3.5,c:3,f:9},
+    {e:'🌰',name:'Flaxseeds (1 tbsp)',cal:55,p:1.9,c:3,f:4.5},
+    {e:'⚫',name:'Chia seeds (1 tbsp)',cal:58,p:2,c:5,f:3.7},
+  ]},
+  {id:'grains',label:'Rice, roti & staples',foods:[
+    {e:'🍚',name:'Rice (1 cup cooked)',cal:206,p:4,c:45,f:0.5},
+    {e:'🫓',name:'Wheat roti (1 medium)',cal:71,p:2.5,c:15,f:0.4},
+    {e:'🫓',name:'Whole wheat roti (1)',cal:78,p:3,c:15.5,f:0.8},
+    {e:'🫓',name:'Soya + atta roti (1)',cal:82,p:5.5,c:13,f:1.5},
+    {e:'🫓',name:'Jowar roti (1)',cal:75,p:2.5,c:15,f:0.8},
+    {e:'🫓',name:'Bajra roti (1)',cal:90,p:3,c:17,f:1.5},
+    {e:'🫓',name:'Plain paratha (1)',cal:180,p:3,c:24,f:7},
+    {e:'🟤',name:'Idli (2)',cal:80,p:3,c:16,f:0.5},
+    {e:'🟤',name:'Dosa (1)',cal:120,p:3,c:21,f:2.5},
+    {e:'🥣',name:'Oats (1 cup cooked)',cal:158,p:6,c:27,f:3},
+  ]},
+  {id:'dal',label:'Dal & legumes',foods:[
+    {e:'🍵',name:'Toor / arhar dal (1 cup)',cal:120,p:8,c:20,f:0.5},
+    {e:'🍵',name:'Moong dal (1 cup)',cal:105,p:7,c:18,f:0.4},
+    {e:'🍵',name:'Masoor dal (1 cup)',cal:115,p:9,c:18,f:0.5},
+    {e:'🫘',name:'Rajma (1 cup)',cal:225,p:15,c:40,f:0.9},
+    {e:'🫘',name:'Kabuli chana (1 cup)',cal:270,p:15,c:45,f:4},
+    {e:'🧀',name:'Paneer (100g)',cal:265,p:18,c:3,f:20},
+    {e:'🥬',name:'Palak sabzi (1 cup)',cal:80,p:3,c:10,f:3},
+    {e:'🍲',name:'Sambar (1 cup)',cal:102,p:5,c:15,f:2},
+  ]},
+  {id:'meat',label:'Eggs & chicken',foods:[
+    {e:'🥚',name:'Egg whole (1)',cal:70,p:6,c:0.5,f:5},
+    {e:'🥚',name:'Egg whites (3)',cal:51,p:11,c:0.5,f:0.2},
+    {e:'🍳',name:'Boiled egg (1)',cal:70,p:6,c:0.5,f:5},
+    {e:'🍳',name:'Boiled eggs (2)',cal:140,p:12,c:1,f:10},
+    {e:'🍳',name:'Half fry / sunny side up (1)',cal:90,p:6,c:0.3,f:7},
+    {e:'🍳',name:'Omelette plain (2 eggs)',cal:190,p:13,c:1,f:15},
+    {e:'🍳',name:'Masala omelette (2 eggs)',cal:210,p:14,c:4,f:15},
+    {e:'🍳',name:'Cheese omelette (2 eggs)',cal:280,p:18,c:2,f:22},
+    {e:'🍳',name:'Veggie omelette (2 eggs)',cal:200,p:14,c:5,f:14},
+    {e:'🍳',name:'Egg bhurji (2 eggs)',cal:185,p:13,c:2,f:14},
+    {e:'🍗',name:'Chicken breast (100g)',cal:165,p:31,c:0,f:3.6},
+    {e:'🍛',name:'Chicken curry (1 piece)',cal:220,p:22,c:4,f:13},
+  ]},
+  {id:'dips',label:'Dips, spreads & world foods',foods:[
+    {e:'🥑',name:'Guacamole (2 tbsp)',cal:50,p:0.7,c:3,f:4.5},
+    {e:'🥑',name:'Guacamole (½ cup)',cal:100,p:1.5,c:6,f:9},
+    {e:'🫘',name:'Hummus (2 tbsp)',cal:70,p:2.5,c:8,f:3},
+    {e:'🫘',name:'Hummus (½ cup)',cal:175,p:6,c:20,f:8},
+    {e:'🫘',name:'Chole / chana masala (1 cup)',cal:270,p:14,c:40,f:7},
+    {e:'🫘',name:'Chole bhature (1 plate)',cal:520,p:15,c:70,f:20},
+    {e:'🫓',name:'Pita bread (1 medium)',cal:165,p:5.5,c:33,f:1},
+    {e:'🫓',name:'Pita with hummus',cal:235,p:8,c:41,f:4},
+    {e:'🫓',name:'Pita chips (10 pieces)',cal:130,p:3,c:22,f:3.5},
+    {e:'🧆',name:'Falafel (3 pieces)',cal:170,p:6,c:22,f:7},
+    {e:'🫙',name:'Tzatziki / raita (3 tbsp)',cal:30,p:1.5,c:2,f:1.5},
+    {e:'🍅',name:'Salsa (2 tbsp)',cal:10,p:0.3,c:2,f:0},
+    {e:'🫙',name:'Tahini (1 tbsp)',cal:89,p:2.6,c:3,f:8},
+    {e:'🌯',name:'Wrap / kathi roll (1)',cal:290,p:12,c:38,f:10},
+    {e:'🌯',name:'Paneer kathi roll (1)',cal:340,p:15,c:40,f:14},
+  ]},
+  {id:'fruits',label:'Fruits',foods:[
+    {e:'🍌',name:'Banana (1 medium)',cal:89,p:1.1,c:23,f:0.3},
+    {e:'🍎',name:'Apple (1 medium)',cal:72,p:0.4,c:19,f:0.2},
+    {e:'🍊',name:'Orange (1 medium)',cal:62,p:1.2,c:15,f:0.2},
+    {e:'🍇',name:'Grapes (1 cup)',cal:104,p:1.1,c:27,f:0.2},
+    {e:'🥭',name:'Mango (1 cup sliced)',cal:99,p:1.4,c:25,f:0.6},
+    {e:'🍉',name:'Watermelon (1 cup)',cal:30,p:0.6,c:8,f:0.2},
+    {e:'🍓',name:'Strawberries (1 cup)',cal:49,p:1,c:12,f:0.5},
+    {e:'🍑',name:'Papaya (1 cup)',cal:55,p:0.9,c:14,f:0.2},
+    {e:'🍋',name:'Guava (1 medium)',cal:37,p:1.4,c:8,f:0.5},
+    {e:'🍈',name:'Pomegranate (½ cup seeds)',cal:72,p:1.5,c:16,f:1},
+    {e:'🫐',name:'Blueberries (½ cup)',cal:42,p:0.5,c:11,f:0.2},
+    {e:'🍐',name:'Pear (1 medium)',cal:84,p:0.5,c:22,f:0.2},
+    {e:'🥝',name:'Kiwi (1 medium)',cal:42,p:0.8,c:10,f:0.4},
+    {e:'🍍',name:'Pineapple (1 cup)',cal:74,p:0.9,c:20,f:0.2},
+    {e:'🍒',name:'Chickoo / sapodilla (1)',cal:83,p:0.4,c:20,f:1},
+    {e:'🍋',name:'Lemon juice (1 tbsp)',cal:4,p:0.1,c:1.3,f:0},
+    {e:'🫐',name:'Amla / Indian gooseberry (2)',cal:22,p:0.5,c:5,f:0.1},
+    {e:'🍌',name:'Plantain / raw banana (½)',cal:89,p:1,c:23,f:0.1},
+    {e:'🍑',name:'Chikoo shake (1 glass)',cal:210,p:5,c:38,f:4},
+    {e:'🥭',name:'Mango lassi (1 glass)',cal:230,p:6,c:38,f:5},
+  ]},
+  {id:'dairy',label:'Dairy & fats',foods:[
+    {e:'🥛',name:'Milk full fat (1 glass)',cal:122,p:8,c:12,f:5},
+    {e:'🥛',name:'Curd / dahi (1 cup)',cal:98,p:8,c:11,f:3},
+    {e:'🫙',name:'Greek yogurt (100g)',cal:97,p:10,c:6,f:3.8},
+    {e:'🧀',name:'Paneer raw (100g)',cal:265,p:18,c:3,f:20},
+    {e:'🫙',name:'Ghee (1 tsp)',cal:45,p:0,c:0,f:5},
+    {e:'🫙',name:'Cooking oil (1 tsp)',cal:40,p:0,c:0,f:4.5},
+  ]},
+];
+
+const ALL_FOODS=FOOD_CATS.flatMap(c=>c.foods);
+
+/* ─── TAB SWITCHING ─── */
+function switchTab(name){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  ['profile','bmi','targets','log','tips'].forEach((t,i)=>{
+    if(t===name) document.querySelectorAll('.nav-tab')[i].classList.add('active');
+  });
+  if(name==='log') renderFoods();
+  if(name==='bmi') syncBMIFromProfile();
+}
+
+/* ─── PROFILE ─── */
+function selSingle(el,group,val){
+  document.querySelectorAll(`[data-g="${group}"]`).forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel'); profile[group]=val;
+}
+function toggleAct(el){
+  const act=el.dataset.act;
+  if(act==='sedentary'){
+    if(selectedActs.has('sedentary')){selectedActs.delete('sedentary');el.classList.remove('sel');}
+    else{selectedActs.clear();document.querySelectorAll('#act-grid .pill').forEach(p=>p.classList.remove('sel'));selectedActs.add('sedentary');el.classList.add('sel');}
+  } else {
+    selectedActs.delete('sedentary');
+    document.querySelector('[data-act="sedentary"]').classList.remove('sel');
+    if(selectedActs.has(act)){selectedActs.delete(act);el.classList.remove('sel');}
+    else{selectedActs.add(act);el.classList.add('sel');}
+  }
+  const s=document.getElementById('act-summary');
+  if(!selectedActs.size){s.style.display='none';return;}
+  s.textContent='✓ '+[...selectedActs].map(a=>ACT_LABELS[a]).join(' + ');
+  s.style.display='block';
+}
+function calcActivityMult(){
+  if(!selectedActs.size||selectedActs.has('sedentary'))return 1.2;
+  const days=+document.getElementById('freq-days').value;
+  const mins=+document.getElementById('session-mins').value;
+  const m={walk:0.175,run:0.35,badminton:0.3,cycling:0.25,swim:0.35,yoga:0.1,light:0.2,weights:0.3,dance:0.22,cricket:0.2,stairs:0.12};
+  let tot=0; selectedActs.forEach(a=>{tot+=(m[a]||0.2);});
+  return Math.min(1.9,Math.max(1.2,1.2+(tot*days*mins)/(7*1440)*7));
+}
+/*
+ ══════════════════════════════════════════════════════════════════
+  STANDARDS USED
+  ─────────────────────────────────────────────────────────────────
+  BMI Classification:
+  • WHO Asia-Pacific / ICMR 2020 cutoffs for South Asians:
+      <18.5  = Underweight
+      18.5–22.9 = Normal
+      23–24.9   = Overweight (pre-obese)
+      25–29.9   = Obese Class I
+      ≥30       = Obese Class II+
+    (Lower than Western WHO cutoffs — South Asians develop
+     metabolic risk at lower BMI; endorsed by ICMR, NIN Hyderabad,
+     Consensus Statement on Obesity 2020)
+
+  BMR Formula:
+  • Mifflin-St Jeor (1990) — most validated for Indian adults
+      Male:   10W + 6.25H − 5A + 5
+      Female: 10W + 6.25H − 5A − 161
+
+  Activity Multipliers (WHO/FAO/UNU 2004 PAL values):
+      Sedentary 1.2, Light 1.375, Moderate 1.55, Active 1.725
+
+  Protein:
+  • ICMR-NIN 2020 RDA: 0.83 g/kg ideal body weight for adults
+  • WHO 2007: safe intake 0.83 g/kg; therapeutic 1.2–1.6 g/kg
+  • NIN 2020 for 40+ (sarcopenia prevention): 1.0–1.2 g/kg IBW
+  • Adjusted upward for overweight/obese using IBW (not actual wt)
+    to avoid overestimating intake for adipose tissue
+
+  Carbohydrate:
+  • WHO/FAO 2003: 55–75% of total energy
+  • ICMR 2020: 50–60% for Indians; reduced for overweight/obese
+    to 45–50% to aid metabolic control
+  • ADA/EASD: low-carb (40–45%) for BMI ≥25 (Asian) to manage
+    insulin resistance common in Indians
+
+  Fat:
+  • WHO 2003: 15–30% total energy; saturated fat <10%
+  • ICMR 2020: 20–25% for sedentary; up to 30% for active adults
+  • Fat % reduced for obese, increased slightly for underweight
+
+  Fiber:
+  • WHO: ≥25 g/day adults; ≥30 g/day for 50+
+  • ICMR 2020: 40 g/day for Indian adults (higher due to
+    plant-heavy diet baseline)
+
+  Calorie deficit/surplus:
+  • WHO: safe deficit = 500–600 kcal/day for 0.5 kg/wk loss
+  • For 40+: ICMR recommends conservative 300–400 kcal deficit
+    to prevent muscle loss
+ ══════════════════════════════════════════════════════════════════
+*/
+
+function getBMICategory(bmi){
+  // WHO Asia-Pacific / ICMR 2020 cutoffs for South Asians
+  if(bmi<18.5)  return{id:'under', label:'Underweight',       color:'#4DB8FF', deficit: 300};
+  if(bmi<23)    return{id:'normal',label:'Normal weight',      color:'#1D9E75', deficit:   0};
+  if(bmi<25)    return{id:'preob', label:'Pre-obese/Overweight',color:'#EF9F27', deficit:-300};
+  if(bmi<30)    return{id:'ob1',   label:'Obese Class I',       color:'#E24B4A', deficit:-500};
+                return{id:'ob2',   label:'Obese Class II+',     color:'#8B0000', deficit:-600};
+}
+
+function getIBW(ht, gender){
+  // Devine formula (IBW) — used by ICMR for protein calculation base
+  // Male:   50 + 2.3 × (height_in - 60)
+  // Female: 45.5 + 2.3 × (height_in - 60)
+  const htIn = ht / 2.54;
+  const ibw = gender === 'male'
+    ? 50 + 2.3 * Math.max(0, htIn - 60)
+    : 45.5 + 2.3 * Math.max(0, htIn - 60);
+  return Math.round(ibw * 10) / 10;
+}
+
+function calcTargets(){
+  const age = +document.getElementById('age').value;
+  const wt  = +document.getElementById('weight').value;
+  const ht  = +document.getElementById('height').value;
+  const g   = profile.gender || 'male';
+  const goal= profile.goal   || 'maintain';
+  const mult= calcActivityMult();
+
+  // ── BMR: Mifflin-St Jeor ──────────────────────────────────────
+  const bmr = g === 'male'
+    ? 10*wt + 6.25*ht - 5*age + 5
+    : 10*wt + 6.25*ht - 5*age - 161;
+  const tdee = Math.round(bmr * mult);
+
+  // ── BMI & category (WHO Asia-Pacific / ICMR 2020) ─────────────
+  const htM  = ht / 100;
+  const bmi  = wt / (htM * htM);
+  const cat  = getBMICategory(bmi);
+  const ibw  = getIBW(ht, g);
+  // Protein base weight: use IBW for overweight/obese (ICMR 2020)
+  const protBase = (cat.id === 'ob1' || cat.id === 'ob2') ? ibw : wt;
+
+  // ── Calorie target ────────────────────────────────────────────
+  // Goal overrides BMI signal, but BMI caps the deficit/surplus
+  let calAdj = 0;
+  if(goal === 'lose')   calAdj = -Math.min(500, Math.max(300, Math.abs(cat.deficit || 400)));
+  if(goal === 'muscle') calAdj = cat.id === 'ob1' || cat.id === 'ob2' ? 0 : 200;
+  if(goal === 'maintain' && (cat.id === 'ob1' || cat.id === 'ob2')) calAdj = -300; // WHO: even "maintain" gets mild deficit for obese
+  const cal = Math.max(1200, Math.round(tdee + calAdj));
+
+  // ── Protein (ICMR-NIN 2020 + WHO 2007) ───────────────────────
+  // Base RDA 0.83 g/kg IBW; elevated for 40+ sarcopenia prevention
+  // and further by goal
+  const protRDA = {
+    maintain: { normal: 1.0, under: 1.1, preob: 1.0, ob1: 1.2, ob2: 1.2 },
+    lose:     { normal: 1.2, under: 1.2, preob: 1.3, ob1: 1.4, ob2: 1.5 },
+    muscle:   { normal: 1.4, under: 1.5, preob: 1.4, ob1: 1.4, ob2: 1.4 },
+  };
+  // Gender modifier: ICMR women slightly lower (0.9 ×)
+  const gMod = g === 'female' ? 0.92 : 1.0;
+  const prot = Math.round(protBase * protRDA[goal][cat.id] * gMod);
+
+  // ── Fat % (WHO 2003 + ICMR 2020) ─────────────────────────────
+  // Normal: 25%, Under: 30%, Overweight: 25%, Obese: 22%
+  const fatPct = { normal:0.25, under:0.30, preob:0.25, ob1:0.22, ob2:0.20 };
+  const fat = Math.round((cal * fatPct[cat.id]) / 9);
+
+  // ── Carbs: remainder after protein + fat ─────────────────────
+  // ICMR 2020: carbs 50–60% for normal; 40–50% for obese Indians
+  const carb = Math.max(50, Math.round((cal - prot*4 - fat*9) / 4));
+
+  // ── Fiber (WHO + ICMR 2020) ──────────────────────────────────
+  const fiber = age >= 50 ? 30 : 25;  // WHO ≥25; ICMR 30–40 for 50+
+
+  targets = {
+    cal, prot, carb, fat, fiber,
+    bmr: Math.round(bmr), tdee, mult: mult.toFixed(2),
+    bmi: Math.round(bmi*10)/10, bmiCat: cat, ibw,
+    calAdj, protBase
+  };
+  return targets;
+}
+
+function calcAndSwitch(){
+  const t = calcTargets();
+  const wt = +document.getElementById('weight').value;
+  const age = +document.getElementById('age').value;
+  const c = t.bmiCat;
+
+  document.getElementById('t-cal').textContent   = t.cal;
+  document.getElementById('t-prot').textContent  = t.prot + 'g';
+  document.getElementById('t-carb').textContent  = t.carb + 'g';
+  document.getElementById('t-fat').textContent   = t.fat  + 'g';
+  document.getElementById('t-fiber').textContent = t.fiber + 'g';
+  document.getElementById('t-bmr').textContent   = t.bmr;
+
+  const acts = selectedActs.size ? [...selectedActs].map(a=>ACT_LABELS[a]).join(' + ') : 'Sedentary';
+  const hasDays = !selectedActs.has('sedentary') && selectedActs.size;
+  const days = document.getElementById('freq-days').value;
+  const mins = document.getElementById('session-mins').value;
+  const rb = document.getElementById('result-badge');
+  rb.innerHTML = `BMI <b>${t.bmi}</b> &middot; ${c.label} &middot; TDEE <b>${t.tdee}</b> kcal &middot; ${acts}${hasDays?' &middot; '+days+'d/wk &middot; '+mins+'min':''}`;
+  rb.style.cssText = `background:${c.color}18;color:${c.color};border:0.5px solid ${c.color}55;border-radius:var(--radius);padding:7px 11px;margin-bottom:11px;font-size:12px;line-height:1.5;display:block;`;
+
+  // BMI adjustment box
+  const adjBox = document.getElementById('bmi-adjustment-box');
+  const bmiTag = (col,txt) => `<span class="adj-tag" style="background:${col}22;color:${col};border:0.5px solid ${col}55">${txt}</span>`;
+  let adjHTML = '';
+
+  if(c.id==='normal'){
+    adjHTML = `&#10003; <strong>BMI ${t.bmi} &mdash; Normal</strong> ${bmiTag('#1D9E75','WHO Asia-Pacific 2004')} ${bmiTag('#1D9E75','ICMR 2020')}<br/>Targets follow standard ICMR-NIN 2020 RDA. No BMI-based adjustments needed.`;
+    adjBox.style.cssText = `display:block;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12px;line-height:1.75;background:var(--green-light);border:0.5px solid var(--green-border);color:var(--green-text);`;
+  } else if(c.id==='under'){
+    adjHTML = `<strong>BMI ${t.bmi} &mdash; ${c.label}</strong> ${bmiTag('#4DB8FF','ICMR: Underweight')} ${bmiTag('#4DB8FF','WHO')}<br/><b>Adjustments:</b><br/>&bull; <b>+300 kcal surplus</b> above TDEE ${t.tdee} kcal &mdash; WHO undernutrition recovery guideline<br/>&bull; <b>Fat 30%</b> of calories &mdash; ICMR 2020 (energy-dense for healthy weight gain)<br/>&bull; <b>Protein ${t.prot}g</b> = ${(t.prot/t.protBase).toFixed(2)} g/kg &mdash; WHO 2007 elevated safe intake for lean mass gain`;
+    adjBox.style.cssText = `display:block;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12px;line-height:1.85;background:#4DB8FF18;border:0.5px solid #4DB8FF55;color:var(--text);`;
+  } else if(c.id==='preob'){
+    adjHTML = `<strong>BMI ${t.bmi} &mdash; ${c.label}</strong> ${bmiTag('#EF9F27','WHO Asia-Pacific: Pre-obese')} ${bmiTag('#EF9F27','ICMR 2020')}<br/><b>Adjustments:</b><br/>&bull; <b>&minus;300 kcal/day deficit</b> from TDEE ${t.tdee} kcal &mdash; WHO Asia-Pacific pre-obese protocol<br/>&bull; <b>Protein ${t.prot}g</b> = ${(t.prot/t.protBase).toFixed(2)} g/kg &mdash; ICMR-NIN 2020: preserve muscle during mild deficit<br/>&bull; <b>Carbs ${Math.round(t.carb*4/t.cal*100)}%</b> of calories &mdash; ICMR 2020 moderate reduction for pre-obese South Asians`;
+    adjBox.style.cssText = `display:block;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12px;line-height:1.85;background:#EF9F2718;border:0.5px solid #EF9F2755;color:var(--text);`;
+  } else if(c.id==='ob1'){
+    adjHTML = `<strong>BMI ${t.bmi} &mdash; ${c.label}</strong> ${bmiTag('#E24B4A','WHO Asia-Pacific: Obese I')} ${bmiTag('#E24B4A','ICMR 2020')}<br/><b>Adjustments:</b><br/>&bull; <b>&minus;500 kcal/day deficit</b> from TDEE ${t.tdee} kcal &mdash; WHO safe loss ~0.5 kg/wk<br/>&bull; <b>Protein on IBW ${t.ibw} kg</b> (Devine formula, ICMR 2020) &mdash; not actual ${wt} kg; avoids overestimating for adipose tissue<br/>&bull; <b>Protein ${t.prot}g</b> = ${(t.prot/t.ibw).toFixed(2)} g/kg IBW &mdash; elevated for satiety and muscle preservation<br/>&bull; <b>Carbs ~${Math.round(t.carb*4/t.cal*100)}%</b> &mdash; ICMR 2020 / ADA: reduced carbs for insulin resistance in South Asians<br/>&bull; <b>Fat 22%</b> &mdash; WHO 2003 lower range for obesity<br/>&#9888; Medical consultation recommended before 500 kcal deficit.`;
+    adjBox.style.cssText = `display:block;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12px;line-height:1.85;background:#E24B4A18;border:0.5px solid #E24B4A55;color:var(--text);`;
+  } else {
+    adjHTML = `<strong>BMI ${t.bmi} &mdash; ${c.label}</strong> ${bmiTag('#8B0000','WHO: Obese II+')} ${bmiTag('#8B0000','ICMR 2020: High Risk')}<br/><b>Adjustments:</b><br/>&bull; <b>&minus;600 kcal/day deficit</b> from TDEE ${t.tdee} kcal &mdash; WHO maximum safe deficit; do not exceed without supervision<br/>&bull; <b>Protein on IBW ${t.ibw} kg</b> &mdash; ${t.prot}g = ${(t.prot/t.ibw).toFixed(2)} g/kg IBW (Devine formula, ICMR 2020)<br/>&bull; <b>Carbs ~${Math.round(t.carb*4/t.cal*100)}%</b> &mdash; ADA/EASD low-carb for obesity with likely insulin resistance<br/>&bull; <b>Fat 20%</b> &mdash; WHO 2003 minimum for essential fatty acids<br/>&#9888; Strongly recommend medical supervision + HbA1c, lipids, thyroid tests.`;
+    adjBox.style.cssText = `display:block;margin-top:8px;padding:10px 12px;border-radius:var(--radius);font-size:12px;line-height:1.85;background:#8B000018;border:0.5px solid #8B000055;color:var(--text);`;
+  }
+  adjBox.innerHTML = adjHTML;
+
+  // Macro detail table
+  const macroCarbs = Math.round(t.carb*4/t.cal*100);
+  const macroProt  = Math.round(t.prot*4/t.cal*100);
+  const macroFat   = Math.round(t.fat*9/t.cal*100);
+  document.getElementById('macro-detail-body').innerHTML = `
+  <table class="macro-detail-table">
+    <tr><th>Nutrient</th><th>Your target</th><th>Per kg</th><th>Standard &amp; basis</th></tr>
+    <tr>
+      <td><b style="color:var(--green)">Protein</b></td>
+      <td class="val">${t.prot}g<br/><span class="src">${macroProt}% of kcal</span></td>
+      <td class="val">${(t.prot/t.protBase).toFixed(2)} g/kg<br/><span class="src">${(c.id==='ob1'||c.id==='ob2')?'IBW '+t.ibw+'kg':'body wt '+wt+'kg'}</span></td>
+      <td class="src">ICMR-NIN 2020 RDA 0.83 g/kg; raised to ${(t.prot/t.protBase).toFixed(2)} g/kg for 40+ sarcopenia prevention + goal (${profile.goal||'maintain'}). WHO 2007: 1.2&ndash;1.6 g/kg therapeutic. Gender: ${profile.gender==='female'?'0.92x (ICMR women)':'1.0x (male)'}.</td>
+    </tr>
+    <tr>
+      <td><b style="color:var(--blue)">Carbs</b></td>
+      <td class="val">${t.carb}g<br/><span class="src">${macroCarbs}% of kcal</span></td>
+      <td class="val">${(t.carb/wt).toFixed(1)} g/kg</td>
+      <td class="src">WHO/FAO 2003: 55&ndash;75% energy. ICMR 2020: 50&ndash;60% for Indians. Set to ${macroCarbs}% for BMI ${t.bmi} (${c.label}) &mdash; lower carbs counter insulin resistance in South Asians.</td>
+    </tr>
+    <tr>
+      <td><b style="color:var(--amber)">Fat</b></td>
+      <td class="val">${t.fat}g<br/><span class="src">${macroFat}% of kcal</span></td>
+      <td class="val">${(t.fat/wt).toFixed(1)} g/kg</td>
+      <td class="src">WHO 2003: 15&ndash;30%; sat fat &lt;10%. ICMR 2020: 20&ndash;25% sedentary; up to 30% active/underweight. Set to ${macroFat}% for ${c.label}.</td>
+    </tr>
+    <tr>
+      <td><b>Fibre</b></td>
+      <td class="val">${t.fiber}g/day</td>
+      <td>&mdash;</td>
+      <td class="src">WHO: &ge;25 g/day. ICMR 2020: 30&ndash;40 g/day for Indian adults. Set to ${t.fiber}g &mdash; age ${age}${age>=50?' (50+ elevated per ICMR)':' (standard)'}.</td>
+    </tr>
+    <tr>
+      <td><b>Calories</b></td>
+      <td class="val">${t.cal} kcal</td>
+      <td>&mdash;</td>
+      <td class="src">BMR ${t.bmr} (Mifflin-St Jeor 1990) &times; PAL ${t.mult} (WHO/FAO/UNU 2004) = TDEE ${t.tdee}. BMI adjustment: ${t.calAdj===0?'none (normal BMI)':t.calAdj>0?'+'+t.calAdj+' kcal surplus':t.calAdj+' kcal deficit'}. Goal: ${profile.goal||'maintain'}.</td>
+    </tr>
+    <tr>
+      <td><b>BMI</b></td>
+      <td class="val" style="color:${c.color}">${t.bmi}<br/><span class="src">${c.label}</span></td>
+      <td>&mdash;</td>
+      <td class="src">WHO Asia-Pacific 2004 / ICMR 2020 cutoffs: &lt;18.5 Underweight &middot; 18.5&ndash;22.9 Normal &middot; 23&ndash;24.9 Pre-obese &middot; 25&ndash;29.9 Obese I &middot; &ge;30 Obese II+. South Asians develop metabolic risk at lower BMI than Western populations. IBW: ${t.ibw} kg (Devine formula, ICMR).</td>
+    </tr>
+  </table>`;
+  document.getElementById('macro-detail-card').style.display = 'block';
+
+  document.getElementById('standards-box').innerHTML =
+    '<b>BMR:</b> Mifflin-St Jeor (1990) &nbsp;&middot;&nbsp; <b>BMI:</b> WHO Asia-Pacific 2004 / ICMR 2020 &nbsp;&middot;&nbsp; ' +
+    '<b>Activity:</b> WHO/FAO/UNU PAL 2004 &nbsp;&middot;&nbsp; <b>Protein:</b> ICMR-NIN 2020 RDA &nbsp;&middot;&nbsp; ' +
+    '<b>Macros:</b> WHO/FAO 2003 + ICMR 2020 &nbsp;&middot;&nbsp; <b>Fiber:</b> WHO + ICMR 2020 &nbsp;&middot;&nbsp; ' +
+    '<b>IBW:</b> Devine formula (ICMR recommended)';
+
+  renderTips(); updateChart(); switchTab('targets');
+}
+
+/* ─── PIE CHART ─── */
+function polarToXY(cx,cy,r,angleDeg){
+  const rad=(angleDeg-90)*Math.PI/180;
+  return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)};
+}
+function describeArc(cx,cy,r,startAngle,endAngle){
+  if(endAngle-startAngle>=360) endAngle=startAngle+359.99;
+  const s=polarToXY(cx,cy,r,startAngle);
+  const e=polarToXY(cx,cy,r,endAngle);
+  const large=endAngle-startAngle>180?1:0;
+  return`M${cx},${cy} L${s.x},${s.y} A${r},${r},0,${large},1,${e.x},${e.y} Z`;
+}
+function updateChart(){
+  const tot=log.reduce((a,i)=>({p:a.p+i.p,c:a.c+i.c,f:a.f+i.f,cal:a.cal+i.cal}),{p:0,c:0,f:0,cal:0});
+  const svg=document.getElementById('pie-svg');
+  const legend=document.getElementById('pie-legend');
+  document.getElementById('pie-cal-val').textContent=Math.round(tot.cal);
+  document.getElementById('pie-card').style.display='block';
+
+  const totalMacroKcal=tot.p*4+tot.c*4+tot.f*9;
+  const slices=[
+    {label:'Protein',val:tot.p,kcal:tot.p*4,unit:'g',color:'#1D9E75',target:targets.prot||1},
+    {label:'Carbs',val:tot.c,kcal:tot.c*4,unit:'g',color:'#378ADD',target:targets.carb||1},
+    {label:'Fat',val:tot.f,kcal:tot.f*9,unit:'g',color:'#EF9F27',target:targets.fat||1},
+  ];
+
+  svg.innerHTML='';
+  if(totalMacroKcal<1){
+    // empty state ring
+    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx',90);circle.setAttribute('cy',90);circle.setAttribute('r',72);
+    circle.setAttribute('fill','none');circle.setAttribute('stroke','var(--surface2)');circle.setAttribute('stroke-width',28);
+    svg.appendChild(circle);
+  } else {
+    let startAngle=0;
+    slices.forEach(s=>{
+      const sweep=(s.kcal/totalMacroKcal)*360;
+      if(sweep<0.5)return;
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d',describeArc(90,90,72,startAngle,startAngle+sweep));
+      path.setAttribute('fill',s.color);
+      svg.appendChild(path);
+      startAngle+=sweep;
+    });
+    // inner white circle for donut
+    const inner=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    inner.setAttribute('cx',90);inner.setAttribute('cy',90);inner.setAttribute('r',48);
+    inner.setAttribute('fill','var(--surface)');
+    svg.appendChild(inner);
+  }
+
+  // legend
+  legend.innerHTML='';
+  slices.forEach(s=>{
+    const pct=targets[s.label.toLowerCase().replace('protein','prot').replace('carbs','carb').replace('fat','fat')]
+      ? Math.round(s.val/targets[s.label.toLowerCase().replace('protein','prot').replace('carbs','carb').replace('fat','fat')]*100) : 0;
+    const tKey=s.label==='Protein'?'prot':s.label==='Carbs'?'carb':'fat';
+    const tVal=targets[tKey]||0;
+    const item=document.createElement('div');item.className='pie-leg-item';
+    item.innerHTML=`<div class="pie-leg-dot" style="background:${s.color}"></div><span class="pie-leg-label">${s.label}</span><span class="pie-leg-val">${Math.round(s.val)}/${tVal}g</span><span style="font-size:11px;color:var(--text3)">(${Math.min(pct,999)}%)</span>`;
+    legend.appendChild(item);
+  });
+
+  // also update bars
+  updateBars(tot);
+}
+
+function updateBars(tot){
+  if(!targets.prot)return;
+  const t=targets;
+  document.getElementById('prog-p').textContent=`${Math.round(tot.p)} / ${t.prot}g`;
+  document.getElementById('prog-c').textContent=`${Math.round(tot.c)} / ${t.carb}g`;
+  document.getElementById('prog-f').textContent=`${Math.round(tot.f)} / ${t.fat}g`;
+  document.getElementById('prog-cal').textContent=`${Math.round(tot.cal)} / ${t.cal} kcal`;
+  const pct=(v,mx)=>Math.min(100,Math.round(v/mx*100));
+  document.getElementById('bar-p').style.width=pct(tot.p,t.prot)+'%';
+  document.getElementById('bar-c').style.width=pct(tot.c,t.carb)+'%';
+  document.getElementById('bar-f').style.width=pct(tot.f,t.fat)+'%';
+  document.getElementById('bar-cal').style.width=pct(tot.cal,t.cal)+'%';
+}
+
+/* ─── FOOD LIST ─── */
+let foodsRendered=false;
+function makeFoodBtn(food){
+  const btn=document.createElement('div');
+  btn.className='food-btn';
+  btn.innerHTML=`<div class="food-img-wrap">${food.e}</div><div class="food-info"><div class="food-name">${food.name}</div><div class="food-pmacro"><span class="mp">P${food.p}g</span> <span class="mc">C${food.c}g</span> <span class="mf">F${food.f}g</span> · <span class="food-kcal">${food.cal}kcal</span></div></div><div class="food-add-ico">+</div>`;
+  btn.onclick=()=>{
+    addFood(food);
+    btn.classList.add('food-added-flash');
+    setTimeout(()=>btn.classList.remove('food-added-flash'),350);
+  };
+  return btn;
+}
+function renderFoods(){
+  if(foodsRendered)return;
+  const c=document.getElementById('all-cats');
+  FOOD_CATS.forEach(cat=>{
+    const l=document.createElement('div');l.className='sec-lbl';l.textContent=cat.label;c.appendChild(l);
+    const g=document.createElement('div');g.className='food-grid';
+    cat.foods.forEach(f=>g.appendChild(makeFoodBtn(f)));c.appendChild(g);
+  });
+  foodsRendered=true;
+}
+function filterFoods(q){
+  const sr=document.getElementById('search-results');
+  const ac=document.getElementById('all-cats');
+  if(!q.trim()){sr.style.display='none';ac.style.display='';return;}
+  const res=ALL_FOODS.filter(f=>f.name.toLowerCase().includes(q.toLowerCase()));
+  sr.innerHTML='';
+  if(res.length){res.forEach(f=>sr.appendChild(makeFoodBtn(f)));sr.style.display='flex';}
+  else{sr.innerHTML='<div style="font-size:13px;color:var(--text3);padding:10px 0">No results</div>';sr.style.display='flex';}
+  ac.style.display='none';
+}
+
+/* ─── LOG ─── */
+// Each log entry stores base (1 serving) macros + qty multiplier
+function addFood(food){
+  log.push({
+    ...food,
+    id:Date.now(),
+    qty:1,           // multiplier — 0.5 = half serving, 2 = double
+    baseP:food.p, baseC:food.c, baseF:food.f, baseCal:food.cal
+  });
+  renderLog(); updateChart();
+}
+function removeFood(id){const i=log.findIndex(x=>x.id===id);if(i>-1)log.splice(i,1);renderLog();updateChart();}
+
+function updateQty(id, val){
+  const item=log.find(x=>x.id===id);
+  if(!item) return;
+  const q=Math.max(0.1, Math.min(10, parseFloat(val)||1));
+  item.qty=q;
+  item.cal=Math.round(item.baseCal*q*10)/10;
+  item.p=Math.round(item.baseP*q*10)/10;
+  item.c=Math.round(item.baseC*q*10)/10;
+  item.f=Math.round(item.baseF*q*10)/10;
+  // update just the macro tags and kcal in that row without full re-render
+  const row=document.getElementById('logrow-'+id);
+  if(row){
+    row.querySelector('.log-cal').textContent=Math.round(item.cal)+'kcal';
+    row.querySelector('.tag-p').textContent='P'+item.p+'g';
+    row.querySelector('.tag-c').textContent='C'+item.c+'g';
+    row.querySelector('.tag-f').textContent='F'+item.f+'g';
+  }
+  updateTotalsRow(); updateChart();
+}
+
+function updateTotalsRow(){
+  const tr=document.getElementById('totals-row');
+  if(!log.length){tr.style.display='none';return;}
+  const tot=log.reduce((a,i)=>({cal:a.cal+i.cal,p:a.p+i.p,c:a.c+i.c,f:a.f+i.f}),{cal:0,p:0,c:0,f:0});
+  tr.innerHTML=`<span>Totals</span><span style="color:var(--green)">P${Math.round(tot.p)}g</span><span style="color:var(--blue)">C${Math.round(tot.c)}g</span><span style="color:var(--amber)">F${Math.round(tot.f)}g</span><span>${Math.round(tot.cal)}kcal</span>`;
+  tr.style.display='flex';
+}
+
+function renderLog(){
+  const list=document.getElementById('log-list');
+  const tr=document.getElementById('totals-row');
+  if(!log.length){list.innerHTML='<div class="empty">Nothing logged yet.<br/>Add food below 👇</div>';tr.style.display='none';return;}
+  list.innerHTML='';
+  log.forEach(item=>{
+    const row=document.createElement('div');
+    row.className='log-row'; row.id='logrow-'+item.id;
+    row.innerHTML=`
+      <span class="log-emoji">${item.e}</span>
+      <div class="log-details">
+        <div class="log-name">${item.name}</div>
+        <div class="log-qty-row">
+          <span class="qty-label">Qty:</span>
+          <button class="qty-btn" onclick="stepQty(${item.id},-0.5)">−</button>
+          <input class="qty-input" type="number" min="0.1" max="10" step="0.5"
+            value="${item.qty}" onchange="updateQty(${item.id},this.value)"
+            oninput="updateQty(${item.id},this.value)"/>
+          <button class="qty-btn" onclick="stepQty(${item.id},0.5)">+</button>
+          <span class="qty-hint">× serving</span>
+        </div>
+        <div class="log-tags">
+          <span class="tag tag-p">P${item.p}g</span>
+          <span class="tag tag-c">C${item.c}g</span>
+          <span class="tag tag-f">F${item.f}g</span>
+        </div>
+      </div>
+      <span class="log-cal">${Math.round(item.cal)}kcal</span>
+      <span class="rm-btn" onclick="removeFood(${item.id})">×</span>`;
+    list.appendChild(row);
+  });
+  updateTotalsRow();
+}
+
+function stepQty(id, delta){
+  const item=log.find(x=>x.id===id);
+  if(!item) return;
+  const newQ=Math.round(Math.max(0.5, Math.min(10, item.qty+delta))*10)/10;
+  const input=document.querySelector(`#logrow-${id} .qty-input`);
+  if(input) input.value=newQ;
+  updateQty(id, newQ);
+}
+
+/* ─── BMI ─── */
+function syncBMIFromProfile(){
+  const w=document.getElementById('weight').value;
+  const h=document.getElementById('height').value;
+  if(w) document.getElementById('bmi-weight').value=w;
+  if(h) document.getElementById('bmi-height').value=h;
+  if(w&&h) calcBMI();
+}
+
+function calcBMI(){
+  const wt=+document.getElementById('bmi-weight').value;
+  const ht=+document.getElementById('bmi-height').value;
+  const emptyEl=document.getElementById('bmi-empty');
+  const resultEl=document.getElementById('bmi-result');
+  const assessEl=document.getElementById('diet-assessment');
+
+  if(!wt||!ht||wt<30||ht<100){emptyEl.style.display='block';resultEl.style.display='none';assessEl.style.display='none';return;}
+  emptyEl.style.display='none';resultEl.style.display='block';
+
+  const htM=ht/100;
+  const bmi=wt/(htM*htM);
+  const bmiRound=Math.round(bmi*10)/10;
+
+  document.getElementById('bmi-val').textContent=bmiRound.toFixed(1);
+
+  // WHO Asia-Pacific 2004 / ICMR 2020 cutoffs for South Asians
+  let cat,color,catId;
+  if(bmi<18.5)  {cat='Underweight';            color='#4DB8FF'; catId='under';}
+  else if(bmi<23){cat='Normal weight';           color='#1D9E75'; catId='normal';}
+  else if(bmi<25){cat='Pre-obese / Overweight';  color='#EF9F27'; catId='preob';}
+  else if(bmi<30){cat='Obese — Class I';          color='#E24B4A'; catId='ob1';}
+  else           {cat='Obese — Class II+';        color='#8B0000'; catId='ob2';}
+
+  const catEl=document.getElementById('bmi-cat');
+  catEl.textContent=cat+' (WHO Asia-Pacific / ICMR 2020)';
+  catEl.style.color=color;
+  document.getElementById('bmi-val').style.color=color;
+
+  // marker on scale (BMI 15–40)
+  const pct=Math.min(100,Math.max(0,(bmi-15)/(40-15)*100));
+  document.getElementById('bmi-marker').style.left=pct+'%';
+
+  // highlight active range row
+  ['under','normal','preob','ob1','ob2'].forEach(id=>{
+    const el=document.getElementById('range-'+id);
+    if(el) el.classList.toggle('active-range',id===catId);
+  });
+
+  // ideal weight (BMI 18.5–22.9 — ICMR 2020 normal range for Indians)
+  const idealLow =Math.round(18.5*htM*htM);
+  const idealHigh=Math.round(22.9*htM*htM);
+  const ibw = getIBW(ht, profile.gender||'male');
+  const diff =Math.round(wt-idealHigh);
+  let idealText=`<strong>Ideal weight (ICMR 2020, BMI 18.5–22.9):</strong> ${idealLow}–${idealHigh} kg<br/>`;
+  idealText+=`<strong>Ideal Body Weight (Devine formula):</strong> ${ibw} kg — used for protein calculation in overweight/obese<br/>`;
+  if(diff>0)      idealText+=`⚠️ You are <strong>${diff} kg above</strong> the upper ideal range.`;
+  else if(Math.round(wt-idealLow)<0) idealText+=`⚠️ You are <strong>${Math.abs(Math.round(wt-idealLow))} kg below</strong> the lower ideal range.`;
+  else            idealText+=`✅ <strong>Your weight is within the ideal range.</strong>`;
+  document.getElementById('ideal-weight-box').innerHTML=idealText;
+
+  assessEl.style.display='block';
+  renderDietRecs(bmi,catId,wt,ht,diff);
+}
+
+function renderDietRecs(bmi,catId,wt,ht,diff){
+  const recs=document.getElementById('diet-recs');
+  const rotiEl=document.getElementById('roti-recs');
+  const ibw=getIBW(ht,profile.gender||'male');
+  const protWt=(catId==='ob1'||catId==='ob2')?ibw:wt;
+
+  const dietMap={
+    under:{
+      cls:'blue',icon:'🔵',
+      title:'Underweight — Calorie surplus, nutrient density focus (WHO Undernutrition Guidelines)',
+      points:[
+        'Target a surplus of 300–500 kcal/day above TDEE. WHO recommends gradual weight gain of 0.25–0.5 kg/week.',
+        `ICMR 2020 protein target: 1.1 g/kg body weight = ~${Math.round(wt*1.1)}g/day to support lean mass gain.`,
+        'Fat at 30% of total calories — ICMR 2020 higher fat allowance for underweight adults aids calorie density.',
+        'Include protein-rich foods at every meal: chicken, eggs, dal, rajma, paneer, full-fat dahi.',
+        'Add energy-dense healthy snacks: mixed nuts (30g = 180 kcal), banana + peanut butter, full-fat milk.',
+        'Avoid excessive cardio; focus on light resistance training to ensure weight gain is lean mass, not fat.',
+        'Unexplained underweight in adults 40+ warrants a physician check for thyroid, GI absorption issues, or other causes.',
+      ]
+    },
+    normal:{
+      cls:'green',icon:'🟢',
+      title:'Normal weight — Balanced maintenance (ICMR-NIN 2020 RDA)',
+      points:[
+        'BMI in the healthy range per WHO Asia-Pacific 2004 and ICMR 2020 Indian-specific cutoffs.',
+        `ICMR 2020 protein RDA: 1.0 g/kg = ~${Math.round(wt*1.0)}g/day. Prioritise at every meal to prevent age-related sarcopenia after 40.`,
+        'Carbs: ICMR 2020 recommends 50–60% of calories for Indians. Prefer complex carbs — millets, daliya, whole grains.',
+        'Fat: WHO 2003 target 20–25% of calories; saturated fat <10%. Use mustard oil, ghee in moderation (1–2 tsp/day).',
+        'Fibre: WHO ≥25 g/day. Achieved through dal, sabzis, fruits, millets — no supplements needed on an Indian diet.',
+        'Include 2–3 servings of vegetables and 1–2 fruits daily. Seasonal and local produce is nutritionally superior.',
+        'Stay hydrated: 35 ml/kg body weight — approximately 2.5 L/day for most adults (EFSA guideline).',
+      ]
+    },
+    preob:{
+      cls:'amber',icon:'🟡',
+      title:'Pre-obese / Overweight — Mild deficit, high protein (WHO Asia-Pacific + ICMR 2020)',
+      points:[
+        'BMI 23–24.9 is classified as pre-obese for South Asians (WHO Asia-Pacific 2004) — metabolic risk begins here.',
+        `ICMR 2020: Protein 1.0 g/kg actual weight = ~${Math.round(wt*1.0)}g/day to preserve muscle during mild calorie deficit.`,
+        'WHO Asia-Pacific: 300 kcal/day deficit targets ~0.3 kg/week weight loss — appropriate for this BMI level.',
+        'Carbs: reduce to 50–55% of calories. Replace white rice (1 serving) with jowar roti or daliya daily.',
+        'Fat: WHO 2003 target 22–25% — limit ghee to 1 tsp/day, avoid fried snacks.',
+        'Avoid sugar-sweetened beverages completely. One can of soft drink = ~150 kcal of empty calories.',
+        'Check fasting glucose and lipid profile — pre-obese Indians have high risk of insulin resistance and dyslipidaemia.',
+      ]
+    },
+    ob1:{
+      cls:'red',icon:'🔴',
+      title:'Obese Class I — Structured deficit, IBW-based protein (WHO + ICMR 2020)',
+      points:[
+        'BMI 25–29.9 = Obese Class I (WHO Asia-Pacific). This range significantly elevates T2DM and CVD risk in Indians.',
+        `ICMR 2020: Protein based on Ideal Body Weight (${ibw} kg, Devine formula) = ${Math.round(ibw*1.2)}–${Math.round(ibw*1.4)}g/day. Using actual weight overestimates needs for adipose tissue.`,
+        'WHO guideline: 500 kcal/day deficit = ~0.5 kg/week weight loss. Conservative deficit advised for 40+ to prevent muscle loss.',
+        'ICMR 2020: Reduce carbs to 40–50% of calories for insulin-resistant South Asians. Prioritise low-glycaemic foods.',
+        'Fat: WHO 2003 limit to 22% of calories. Avoid all trans fats (vanaspati, commercially baked goods).',
+        'Do not crash diet. VLCD (<800 kcal) without medical supervision causes dangerous muscle loss in 40+ adults.',
+        'Strongly recommended: doctor visit to screen for Type 2 diabetes, hypertension, NAFLD, and sleep apnea — all elevated at this BMI.',
+      ]
+    },
+    ob2:{
+      cls:'red',icon:'🔴',
+      title:'Obese Class II+ — Medical supervision required (WHO + ICMR)',
+      points:[
+        `BMI ≥30 = Obese Class II+ (WHO Asia-Pacific). Carries substantially elevated risk of T2DM, CVD, hypertension, and joint disease.`,
+        '⚠️ Please consult a doctor, endocrinologist, or registered dietitian before starting any structured plan.',
+        `ICMR 2020: Protein based on IBW (${ibw} kg) = ${Math.round(ibw*1.5)}g/day. Higher ratio preserves muscle during significant weight loss.`,
+        'WHO: Calorie deficit 500–600 kcal/day. Never go below 1200 kcal (women) or 1500 kcal (men) without medical supervision.',
+        'ICMR 2020: Carbs 40–45% of calories only. Eliminate all refined carbs — maida, white bread, biscuits, sugary drinks.',
+        'Begin with walking 15–20 min/day and progress gradually — joint stress is high; swimming and cycling are better alternatives.',
+        'Investigate root causes: hypothyroidism, PCOS, Cushing\'s syndrome, medications, or severe insulin resistance may be driving weight gain.',
+      ]
+    }
+  };
+
+  const rec=dietMap[catId]||dietMap['normal'];
+  recs.innerHTML=`<div class="diet-rec ${rec.cls}"><div class="diet-rec-title">${rec.icon} ${rec.title}</div>${rec.points.map(p=>`<div style="margin-bottom:5px;padding-left:14px;position:relative;font-size:13px"><span style="position:absolute;left:0">•</span>${p}</div>`).join('')}</div>`;
+
+  // Roti recs
+  const rotiMap={
+    under:`<div class="diet-rec blue"><div class="diet-rec-title">🫓 Roti guidance — Underweight</div>
+      <div style="font-size:13px">• <strong>Bajra roti (1):</strong> 90 kcal, 3g protein — calorie-dense, iron and zinc-rich. Have 2–3/meal.<br/>
+      • <strong>Wheat/whole wheat roti:</strong> 4–6 rotis/day with ghee (1 tsp) on top boosts calories and healthy fat.<br/>
+      • <strong>Aloo or paneer paratha:</strong> 200–250 kcal each — excellent for calorie surplus with good protein.<br/>
+      💡 ICMR 2020: ensure rotis are paired with dal or sabzi for complete amino acid profile.</div></div>`,
+    normal:`<div class="diet-rec green"><div class="diet-rec-title">🫓 Roti guidance — Normal weight</div>
+      <div style="font-size:13px">• <strong>Rotate daily:</strong> Wheat → Jowar → Bajra across the week for diverse micronutrients (ICMR 2020).<br/>
+      • 2–3 rotis per meal is appropriate. Jowar and bajra provide higher fibre and lower GI than wheat.<br/>
+      • Jowar roti: 75 kcal — antioxidant-rich, lowers LDL. Bajra: 90 kcal — high in iron and magnesium.<br/>
+      💡 All three rotis can replace rice in at least 1 meal/day for better glycaemic control after 40.</div></div>`,
+    preob:`<div class="diet-rec amber"><div class="diet-rec-title">🫓 Roti guidance — Pre-obese</div>
+      <div style="font-size:13px">• <strong>Jowar roti (1):</strong> Best choice — 75 kcal, highest fibre (2.2g), lowest GI of the rotis.<br/>
+      • <strong>Wheat roti:</strong> Limit to 2/meal, 4–5 total/day. No ghee or butter on top.<br/>
+      • ⚠️ Bajra roti: limit to 1/day — slightly higher calorie. Prefer jowar or wheat.<br/>
+      • ❌ Paratha: max 1 plain paratha/day; avoid stuffed parathas during weight management.<br/>
+      💡 WHO 2003: replace one roti per meal with a large bowl of sabzi to reduce carbs without hunger.</div></div>`,
+    ob1:`<div class="diet-rec red"><div class="diet-rec-title">🫓 Roti guidance — Obese Class I</div>
+      <div style="font-size:13px">• <strong>Jowar roti:</strong> Your primary roti choice. Lowest GI, highest fibre — helps insulin response (ICMR 2020).<br/>
+      • <strong>Wheat roti:</strong> Maximum 3–4/day total. Eat with high-protein dal or sabzi to lower glycaemic load.<br/>
+      • ⚠️ Bajra roti: max 1/day due to higher calorie content.<br/>
+      • ❌ Paratha (all types): avoid during active weight loss phase. Resume after reaching BMI <25.<br/>
+      💡 ICMR 2020: load half your plate with non-starchy vegetables first, then add 1 roti.</div></div>`,
+    ob2:`<div class="diet-rec red"><div class="diet-rec-title">🫓 Roti guidance — Obese Class II+</div>
+      <div style="font-size:13px">• <strong>Jowar roti only:</strong> 2–3 per day maximum. Consult dietitian for personalised roti quota.<br/>
+      • ❌ Wheat roti: temporarily replace with jowar during active weight loss.<br/>
+      • ❌ Bajra roti, all parathas: avoid until BMI reaches Obese Class I range.<br/>
+      • Focus meals on protein (dal, chicken, eggs) and vegetables. Roti is a small side, not the main portion.<br/>
+      💡 WHO: carbohydrate restriction to 40–45% of calories is evidence-based for significant obesity management.</div></div>`
+  };
+  rotiEl.innerHTML=rotiMap[catId]||rotiMap['normal'];
+}
+
+function renderTips(){
+  const g=profile.gender||'male';
+  const age=+document.getElementById('age').value||45;
+  const t=targets; const acts=[...selectedActs]; const tips=[];
+  if(g==='female'){
+    tips.push('Calcium is critical post-40 — 2 cups of dahi or milk daily protects bone density. Add ragi porridge 3× a week; it has more calcium than milk.');
+    tips.push('Focus on B12 from eggs and dairy to prevent fatigue and maintain nerve health after 40.');
+  } else {
+    tips.push('Testosterone declines after 40 — prioritise protein at every meal (eggs, chicken, dal) to maintain muscle mass and energy.');
+    tips.push('Zinc from groundnuts and walnuts supports hormonal health. Add a small handful of mixed nuts daily.');
+  }
+  if(acts.includes('run'))tips.push('Running: refuel within 30 min with a banana + 2 boiled eggs or a glass of milk. Running increases protein needs — hit your '+t.prot+'g target daily.');
+  if(acts.includes('badminton'))tips.push('Badminton: eat 1 roti or a banana 45 min before play. Explosive movements demand quick glycogen — don\'t play on empty.');
+  if(acts.includes('swim'))tips.push('Swimming suppresses appetite but burns significant calories. Track diligently — it\'s easy to under-eat after a swim session.');
+  if(acts.includes('weights'))tips.push('Weight training after 40: have a protein-rich meal within 45 min post-workout — chicken, eggs, or Greek yogurt.');
+  if(acts.includes('yoga'))tips.push('Yoga improves cortisol regulation — especially valuable post-40. Practice on a light stomach; banana or dates 30 min prior works well.');
+  if(acts.includes('cycling'))tips.push('Cycling burns significant carbs — add an extra roti or cup of daliya to your pre-ride meal on cycling days.');
+  if(acts.includes('walk'))tips.push('A 20–30 min evening walk after dinner significantly reduces post-meal blood sugar spikes — especially important if you eat rice at night.');
+  if(acts.includes('dance'))tips.push('Zumba and dance are joint-friendly cardio for 40+. Stay hydrated with coconut water or buttermilk during sessions.');
+  if(acts.length>=2&&!acts.includes('sedentary'))tips.push('Combining '+acts.length+' activities is excellent! On rest days, slightly reduce carbs but keep protein high for recovery.');
+  tips.push('🪷 Makhana are an ideal 40+ snack — low calorie, low glycaemic, rich in magnesium. Roast in 1 tsp ghee with rock salt.');
+  tips.push('🍫 Dark chocolate (70%+) in small amounts (1–2 squares/day) is fine after 40 — it\'s rich in magnesium and antioxidants. Avoid milk/white chocolate daily as they\'re mostly sugar and fat.');
+  tips.push('Foxtail millet and daliya have a lower glycaemic index than rice — ideal for managing blood sugar after 40.');
+  if(t.prot)tips.push('Your protein target is '+t.prot+'g/day: eggs + milk at breakfast, dal + paneer at lunch, chicken or rajma at dinner.');
+  tips.push('Limit chai/coffee to 2 cups/day — caffeine disrupts calcium absorption and sleep quality, both critical after 40.');
+  if(t.fiber)tips.push('Fibre target: '+t.fiber+'g/day — dal, sprouts, millets, chia seeds, and vegetables will get you there without supplements.');
+  document.getElementById('tips-content').innerHTML=tips.map(tip=>`<div class="tip-box">💡 ${tip}</div>`).join('');
+}
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      console.log('ServiceWorker registered',reg);
+    }).catch(err=>{
+      console.log('ServiceWorker registration failed',err);
+    });
+  });
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(r => {
+    console.log('Service Worker registered:', r.scope);
+  }).catch(e => console.log('SW registration failed:', e));
+}
+</script>
+
+</body>
+</html>
